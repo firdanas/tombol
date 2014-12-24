@@ -46,6 +46,13 @@ void Init(void);
 
 void ActFeetDorsiplantarS1(void);
 
+void ActFeetDorsiplantarS1(void);
+void ActFeetDorsiplantarS2(void);
+void ActFeetDorsiplantarS3(void);
+void ActHandsAbducadducS1(void);
+void ActHandsAbducadducS2(void);
+void ActHandsAbducadducS3(void);
+
 int main(void)
 {
 	Init();	
@@ -157,33 +164,6 @@ void Init()
 
 }
 
-void DraftMenuCommon(uint16_t STATE_NUMBER,char* TEXT)
-{
-	if (gState != GetParent(STATE_NUMBER))
-		return;
-	if (gCursor == GetCursor(STATE_NUMBER))				
-	{
-		LCDGotoXY(0,0);
-		LCDstring((uint8_t*)(TEXT),16);
-		uint8_t action = ButtonRead();
-		if (action == BUTTON_ENTER_DOWN)
-			gState = STATE_NUMBER;
-		else if (action == BUTTON_NEXT_DOWN)
-			gCursor++;
-		else if (action == BUTTON_PREV_DOWN)
-		{
-			gCursor--;
-		}
-		else if (action == BUTTON_BACK_DOWN)
-		{
-			gState = GetParent(GetParent(STATE_NUMBER));
-			gCursor = GetCursor(GetParent(STATE_NUMBER));
-			return;
-		}
-	}
-	ReStrainScroll();
-	PrintScroll(gCursor,gScrollMax);
-}
 
 
 void ActFeetDorsiplantarS1(){
@@ -201,6 +181,14 @@ void ActFeetDorsiplantarS3(){
 
 void ActHandsAbducadducS1(){
 	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
-	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S3"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S1  "),16);
+}
+void ActHandsAbducadducS2(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S2  "),16);
+}
+void ActHandsAbducadducS3(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S3  "),16);
 }
 

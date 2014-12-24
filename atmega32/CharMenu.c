@@ -181,9 +181,10 @@ void CharMenuDraw()
 			}
 			else if (action == BUTTON_BACK_DOWN)
 			{
+				gCursor = MenuMain[gState].cursorNum;
 				gState = MenuMain[gState].parentIndex;
-				//~ gCursor = MenuMain[gState].cursorNum;
-				gCursor = 1;
+				//~ DrawNumber(MenuMain[gState].cursorNum,3,1,2);
+				//~ gCursor = 1;
 				//~ return;
 			}
 			return;

@@ -76,3 +76,4 @@ void CharMenuInit(void);
 void CharMenuRelink(void);
 void CharMenuDraw(void);
 #endif
+
