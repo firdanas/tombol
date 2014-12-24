@@ -1,0 +1,104 @@
+﻿version 3.00
+cm_version 1.0
+platform CM-510
+- 
+o main
+o begin
+o load param_dest:var:AA1 param_src:?
+o load param_dest:var:AA2 param_src:?
+o load param_dest:var:AA3 param_src:?
+o load param_dest:var:FE1 param_src:?
+o load param_dest:var:FE2 param_src:?
+o load param_dest:var:FE3 param_src:?
+o load param_dest:var:PTR1 param_src:?
+o load param_dest:var:PTR2 param_src:?
+o load param_dest:var:PTR3 param_src:?
+o load param_dest:var:DP1 param_src:?
+o load param_dest:var:DP2 param_src:?
+o load param_dest:var:DP3 param_src:?
+o load param_dest:var:MOTION_STOP param_src:?
+o load param_dest:var:data_AA1 param_src:dec_num:1
+o load param_dest:var:data_AA2 param_src:dec_num:2
+o load param_dest:var:data_AA3 param_src:dec_num:3
+o load param_dest:var:data_FE1 param_src:dec_num:4
+o load param_dest:var:data_FE2 param_src:dec_num:5
+o load param_dest:var:data_FE3 param_src:dec_num:6
+o load param_dest:var:data_PTR1 param_src:dec_num:7
+o load param_dest:var:data_PTR2 param_src:dec_num:8
+o load param_dest:var:data_PTR3 param_src:dec_num:9
+o load param_dest:var:data_DP1 param_src:dec_num:10
+o load param_dest:var:data_DP2 param_src:dec_num:11
+o load param_dest:var:data_DP3 param_src:dec_num:12
+o load param_dest:var:data_START param_src:dec_num:13
+o load param_dest:var:data_STOP param_src:dec_num:14
+o load param_dest:var:CURRENTMOTION param_src:var:AA1
+o // param_text:Set ID zygbee
+o load param_dest:cm:7 param_src:dec_num:255
+o load param_dest:cm:22 param_src:channel_num:255
+- 
+o while(1)
+o begin
+o if param_src:cm:2 lop:== param_src:bool_num:1 rop:then
+o begin
+o load param_dest:var:cmd param_src:cm:1
+- 
+o if param_src:var:cmd lop:== param_src:var:data_START rop:then
+o begin
+o load param_dest:motion:1:50 param_src:var:CURRENTMOTION
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_STOP rop:then
+o begin
+o load param_dest:motion:1:50 param_src:var:MOTION_STOP
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_AA1 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:AA1
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_AA2 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:AA2
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_AA3 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:AA3
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_FE1 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:FE1
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_FE2 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:FE2
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_FE3 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:FE3
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_PTR1 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:PTR1
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_PTR2 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:PTR2
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_PTR3 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:PTR3
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_DP1 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:DP1
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_DP2 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:DP2
+o end
+o elseif param_src:var:cmd lop:== param_src:var:data_DP3 rop:then
+o begin
+o load param_dest:var:CURRENTMOTION param_src:var:DP3
+o end
+- 
+o end
+o end
+o end
