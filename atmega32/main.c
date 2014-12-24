@@ -69,7 +69,7 @@ void Init()
 	MenuMain[STATE_HANDS_MENU].cursorNum = 1;
 	MenuMain[STATE_HANDS_MENU].menuText = (uint8_t*)"Hands           ";
 	MenuMain[STATE_HANDS_MENU].numOfChildren = 3;
-	MenuMain[STATE_HANDS_MENU].parentIndex = 0;
+	MenuMain[STATE_HANDS_MENU].parentIndex = STATE_MENU;
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].cursorNum = 1;
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].menuText = (uint8_t*)"Abduc-Adduc     ";
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].numOfChildren = 3;
@@ -126,13 +126,13 @@ void Init()
 	
 	MenuMain[STATE_FEET_MENU].cursorNum = 2;
 	MenuMain[STATE_FEET_MENU].menuText = (uint8_t*)"Feet            ";
-	MenuMain[STATE_FEET_MENU].numOfChildren = 3;
-	MenuMain[STATE_FEET_MENU].parentIndex = 0;
+	MenuMain[STATE_FEET_MENU].numOfChildren = 1;
+	MenuMain[STATE_FEET_MENU].parentIndex = STATE_MENU;
 	
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].cursorNum = 1;
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].menuText = (uint8_t*)"Dorsi-Plantar   ";
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].numOfChildren = 3;
-	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].parentIndex = 2;
+	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].parentIndex = STATE_FEET_MENU;
 	
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED1].cursorNum = 1;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED1].menuText = (uint8_t*)"Dorsi-Plantar S1";
@@ -144,12 +144,15 @@ void Init()
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].menuText = (uint8_t*)"Dorsi-Plantar S2";
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].numOfChildren = 0;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].parentIndex = STATE_FEET_DORSIPLANTAR_MENU;
+	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].actFunction = &ActFeetDorsiplantarS2;
+	
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].cursorNum = 3;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].menuText = (uint8_t*)"Dorsi-Plantar S3";
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].numOfChildren = 0;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].parentIndex = STATE_FEET_DORSIPLANTAR_MENU;
+	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].actFunction = &ActFeetDorsiplantarS3;
 	
-	CharMenuRelink();
+	//~ CharMenuRelink();
 
 
 }
@@ -184,7 +187,20 @@ void DraftMenuCommon(uint16_t STATE_NUMBER,char* TEXT)
 
 
 void ActFeetDorsiplantarS1(){
-		LCDGotoXY(0,0);
-		LCDstring((uint8_t*)("BA              "),16);
-	
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S1"),16);
 }
+void ActFeetDorsiplantarS2(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S2"),16);
+}
+void ActFeetDorsiplantarS3(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S3"),16);
+}
+
+void ActHandsAbducadducS1(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S3"),16);
+}
+
