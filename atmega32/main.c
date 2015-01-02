@@ -19,6 +19,12 @@
 #define EepromRead(_BLOCK)	eeprom_read_byte((uint8_t*)(_BLOCK))
 
 void Init(void);
+#define USART_BAUD 57600UL
+#define USART_UBBR_VALUE ((F_CPU/(USART_BAUD<<4))-1)
+
+void usart_init(void);
+void usart_vsendbyte(uint8_t u8data);
+uint8_t usart_vreceivebyte(void);
 
 
 
@@ -46,6 +52,13 @@ void Init(void);
 
 void ActFeetDorsiplantarS1(void);
 
+void ActFeetDorsiplantarS1(void);
+void ActFeetDorsiplantarS2(void);
+void ActFeetDorsiplantarS3(void);
+void ActHandsAbducadducS1(void);
+void ActHandsAbducadducS2(void);
+void ActHandsAbducadducS3(void);
+
 int main(void)
 {
 	Init();	
@@ -64,12 +77,13 @@ void Init()
 	LCDGotoXY(0,0);
 	DDRC=0b11100000;
 	PORTC=0b00001111;
+	usart_init();
 	
 	CharMenuInit();
 	MenuMain[STATE_HANDS_MENU].cursorNum = 1;
 	MenuMain[STATE_HANDS_MENU].menuText = (uint8_t*)"Hands           ";
 	MenuMain[STATE_HANDS_MENU].numOfChildren = 3;
-	MenuMain[STATE_HANDS_MENU].parentIndex = 0;
+	MenuMain[STATE_HANDS_MENU].parentIndex = STATE_MENU;
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].cursorNum = 1;
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].menuText = (uint8_t*)"Abduc-Adduc     ";
 	MenuMain[STATE_HANDS_ABDUCADDUC_MENU].numOfChildren = 3;
@@ -126,13 +140,13 @@ void Init()
 	
 	MenuMain[STATE_FEET_MENU].cursorNum = 2;
 	MenuMain[STATE_FEET_MENU].menuText = (uint8_t*)"Feet            ";
-	MenuMain[STATE_FEET_MENU].numOfChildren = 3;
-	MenuMain[STATE_FEET_MENU].parentIndex = 0;
+	MenuMain[STATE_FEET_MENU].numOfChildren = 1;
+	MenuMain[STATE_FEET_MENU].parentIndex = STATE_MENU;
 	
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].cursorNum = 1;
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].menuText = (uint8_t*)"Dorsi-Plantar   ";
 	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].numOfChildren = 3;
-	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].parentIndex = 2;
+	MenuMain[STATE_FEET_DORSIPLANTAR_MENU].parentIndex = STATE_FEET_MENU;
 	
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED1].cursorNum = 1;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED1].menuText = (uint8_t*)"Dorsi-Plantar S1";
@@ -144,47 +158,68 @@ void Init()
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].menuText = (uint8_t*)"Dorsi-Plantar S2";
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].numOfChildren = 0;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].parentIndex = STATE_FEET_DORSIPLANTAR_MENU;
+	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED2].actFunction = &ActFeetDorsiplantarS2;
+	
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].cursorNum = 3;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].menuText = (uint8_t*)"Dorsi-Plantar S3";
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].numOfChildren = 0;
 	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].parentIndex = STATE_FEET_DORSIPLANTAR_MENU;
+	MenuMain[STATE_FEET_DORSIPLANTAR_SPEED3].actFunction = &ActFeetDorsiplantarS3;
 	
-	CharMenuRelink();
+	//~ CharMenuRelink();
 
 
 }
 
-void DraftMenuCommon(uint16_t STATE_NUMBER,char* TEXT)
-{
-	if (gState != GetParent(STATE_NUMBER))
-		return;
-	if (gCursor == GetCursor(STATE_NUMBER))				
-	{
-		LCDGotoXY(0,0);
-		LCDstring((uint8_t*)(TEXT),16);
-		uint8_t action = ButtonRead();
-		if (action == BUTTON_ENTER_DOWN)
-			gState = STATE_NUMBER;
-		else if (action == BUTTON_NEXT_DOWN)
-			gCursor++;
-		else if (action == BUTTON_PREV_DOWN)
-		{
-			gCursor--;
-		}
-		else if (action == BUTTON_BACK_DOWN)
-		{
-			gState = GetParent(GetParent(STATE_NUMBER));
-			gCursor = GetCursor(GetParent(STATE_NUMBER));
-			return;
-		}
-	}
-	ReStrainScroll();
-	PrintScroll(gCursor,gScrollMax);
-}
 
 
 void ActFeetDorsiplantarS1(){
-		LCDGotoXY(0,0);
-		LCDstring((uint8_t*)("BA              "),16);
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S1"),16);
 	
+}
+void ActFeetDorsiplantarS2(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S2"),16);
+}
+void ActFeetDorsiplantarS3(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S3"),16);
+}
+
+void ActHandsAbducadducS1(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S1  "),16);
+}
+void ActHandsAbducadducS2(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S2  "),16);
+}
+void ActHandsAbducadducS3(){
+	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
+	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S3  "),16);
+}
+
+void usart_init(void)
+{
+	UBRRH = (uint8_t)(USART_UBBR_VALUE>>8);
+	UBRRL = (uint8_t)(USART_UBBR_VALUE);
+	/// frame format 8 data bits no parity 1 stop bit
+	UCSRC = (0<<USBS)|(1<<UCSZ1)|(1<<UCSZ0);
+	///enabel rx tx
+	UCSRB = (1<<RXEN)|(1<<TXEN);
+}
+
+void usart_vsendbyte(uint8_t u8data)
+{
+	///tunggu kalo lg ngirim data
+	while ((UCSRA&(1<<UDRE))==0);
+	///transmit
+	UDR = u8data;
+}
+
+uint8_t usart_vreceivebyte()
+{
+	while ((UCSRA&(1<<RXC))==0);
+	return UDR;
 }

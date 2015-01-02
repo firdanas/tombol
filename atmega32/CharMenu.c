@@ -130,16 +130,18 @@ void CharMenuDraw()
 	if (MenuMain[gState].actFunction!=0)
 	{
 		MenuMain[gState].actFunction();
+		_delay_ms(500);
+		while (!ButtonBack());
 		gCursor = MenuMain[gState].cursorNum;
 		gState = MenuMain[gState].parentIndex;
 		return;
 	}
 	uint8_t x=0;
-	///Catch the current menu and cursor
-	for (x=0;x<TOTAL_MENU;x++)
+	///Catch the current menu and cursor, x start from 1 (not main menu)
+	for (x=1;x<TOTAL_MENU;x++)
 	{
 		///current state is gState, find children of MenuMain[gState]
-		if ((gState == MenuMain[x].parentIndex) && (gCursor == (MenuMain[x].cursorNum)))
+		if ((MenuMain[x].parentIndex == gState) && ((MenuMain[x].cursorNum) == gCursor))
 		{
 			///Draw the current menu at current cursor
 			LCDGotoXY(0,0);
@@ -149,19 +151,43 @@ void CharMenuDraw()
 			///wait signal
 			uint8_t action = ButtonRead();
 			if (action == BUTTON_ENTER_DOWN)
+			{
 				gState = x;
+				gCursor = 1;
+				//~ DrawNumber(gState,0,1,3);
+				//~ uint8_t ii;
+				//~ for (ii=1;ii<TOTAL_MENU;ii++)
+				//~ {
+					//~ if ((MenuMain[ii].parentIndex==x) && (MenuMain[ii].cursorNum==1))
+					//~ {
+						//~ gCursor = 1;
+						//~ gState = ii;
+						//~ break;
+					//~ }
+				//~ }
+				//~ _delay_ms(1000);
+			}
 			else if (action == BUTTON_NEXT_DOWN)
+			{
 				gCursor++;
+				if (gCursor>MenuMain[MenuMain[x].parentIndex].numOfChildren)
+					gCursor = 1;
+			}
 			else if (action == BUTTON_PREV_DOWN)
 			{
 				gCursor--;
+				if (gCursor<1)
+					gCursor = MenuMain[MenuMain[x].parentIndex].numOfChildren;
 			}
 			else if (action == BUTTON_BACK_DOWN)
 			{
-				gState = MenuMain[gState].parentIndex;
 				gCursor = MenuMain[gState].cursorNum;
+				gState = MenuMain[gState].parentIndex;
+				//~ DrawNumber(MenuMain[gState].cursorNum,3,1,2);
+				//~ gCursor = 1;
 				//~ return;
 			}
+			return;
 		}
 	}
 }
