@@ -4,19 +4,19 @@ platform CM-510
 - 
 o main
 o begin
-o load param_dest:var:AA1 param_src:?
-o load param_dest:var:AA2 param_src:?
-o load param_dest:var:AA3 param_src:?
-o load param_dest:var:FE1 param_src:?
-o load param_dest:var:FE2 param_src:?
-o load param_dest:var:FE3 param_src:?
-o load param_dest:var:PTR1 param_src:?
-o load param_dest:var:PTR2 param_src:?
-o load param_dest:var:PTR3 param_src:?
-o load param_dest:var:DP1 param_src:?
-o load param_dest:var:DP2 param_src:?
-o load param_dest:var:DP3 param_src:?
-o load param_dest:var:MOTION_STOP param_src:?
+o load param_dest:var:AA1 param_src:dec_num:13
+o load param_dest:var:AA2 param_src:dec_num:12
+o load param_dest:var:AA3 param_src:dec_num:11
+o load param_dest:var:FE1 param_src:dec_num:18
+o load param_dest:var:FE2 param_src:dec_num:17
+o load param_dest:var:FE3 param_src:dec_num:16
+o load param_dest:var:PTR1 param_src:dec_num:40
+o load param_dest:var:PTR2 param_src:dec_num:39
+o load param_dest:var:PTR3 param_src:dec_num:38
+o load param_dest:var:DP1 param_src:dec_num:28
+o load param_dest:var:DP2 param_src:dec_num:27
+o load param_dest:var:DP3 param_src:dec_num:26
+o load param_dest:var:MOTION_STOP param_src:dec_num:9
 o load param_dest:var:data_AA1 param_src:dec_num:1
 o load param_dest:var:data_AA2 param_src:dec_num:2
 o load param_dest:var:data_AA3 param_src:dec_num:3
@@ -31,7 +31,7 @@ o load param_dest:var:data_DP2 param_src:dec_num:11
 o load param_dest:var:data_DP3 param_src:dec_num:12
 o load param_dest:var:data_START param_src:dec_num:13
 o load param_dest:var:data_STOP param_src:dec_num:14
-o load param_dest:var:CURRENTMOTION param_src:var:AA1
+o load param_dest:var:CURRENTMOTION param_src:var:MOTION_STOP
 o // param_text:Set ID zygbee
 o load param_dest:cm:7 param_src:dec_num:255
 o load param_dest:cm:22 param_src:channel_num:255
