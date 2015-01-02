@@ -19,6 +19,12 @@
 #define EepromRead(_BLOCK)	eeprom_read_byte((uint8_t*)(_BLOCK))
 
 void Init(void);
+#define USART_BAUD 57600UL
+#define USART_UBBR_VALUE ((F_CPU/(USART_BAUD<<4))-1)
+
+void usart_init(void);
+void usart_vsendbyte(uint8_t u8data);
+uint8_t usart_vreceivebyte(void);
 
 
 
@@ -71,6 +77,7 @@ void Init()
 	LCDGotoXY(0,0);
 	DDRC=0b11100000;
 	PORTC=0b00001111;
+	usart_init();
 	
 	CharMenuInit();
 	MenuMain[STATE_HANDS_MENU].cursorNum = 1;
@@ -169,6 +176,7 @@ void Init()
 void ActFeetDorsiplantarS1(){
 	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
 	LCDGotoXY(0,1);LCDstring((uint8_t*)("Dorsi Plantar S1"),16);
+	
 }
 void ActFeetDorsiplantarS2(){
 	LCDGotoXY(0,0);LCDstring((uint8_t*)("Running    [STOP"),16);
@@ -192,3 +200,26 @@ void ActHandsAbducadducS3(){
 	LCDGotoXY(0,1);LCDstring((uint8_t*)("Abduc-Adduc S3  "),16);
 }
 
+void usart_init(void)
+{
+	UBRRH = (uint8_t)(USART_UBBR_VALUE>>8);
+	UBRRL = (uint8_t)(USART_UBBR_VALUE);
+	/// frame format 8 data bits no parity 1 stop bit
+	UCSRC = (0<<USBS)|(1<<UCSZ1)|(1<<UCSZ0);
+	///enabel rx tx
+	UCSRB = (1<<RXEN)|(1<<TXEN);
+}
+
+void usart_vsendbyte(uint8_t u8data)
+{
+	///tunggu kalo lg ngirim data
+	while ((UCSRA&(1<<UDRE))==0);
+	///transmit
+	UDR = u8data;
+}
+
+uint8_t usart_vreceivebyte()
+{
+	while ((UCSRA&(1<<RXC))==0);
+	return UDR;
+}
